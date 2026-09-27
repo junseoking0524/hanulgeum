@@ -19,13 +19,53 @@
   img { max-width:100%; display:block; }
   .container { max-width:1180px; margin:0 auto; padding:0 28px; }
   .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:999px; font-size:13px; font-weight:700; letter-spacing:.04em; background:#eaf3fb; color:#0068b7; }
-  .card-hover { transition:transform .25s ease, box-shadow .25s ease; }
-  .card-hover:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(10,37,64,.14); }
-  .tab-btn { border:none; border-radius:999px; padding:11px 22px; font-size:14.5px; font-weight:700; cursor:pointer; transition:all .2s ease; background:#f0f3f6; color:#495a68; }
+
+  /* Card hover: lift + soften shadow + subtle image zoom, Samsung-style */
+  .card-hover { transition:transform .45s cubic-bezier(.16,.84,.44,1), box-shadow .45s cubic-bezier(.16,.84,.44,1), border-color .45s ease; }
+  .card-hover:hover { transform:translateY(-8px); box-shadow:0 24px 48px rgba(10,37,64,.16); border-color:#d6e3ee; }
+  .card-hover .zoom-img { overflow:hidden; }
+  .card-hover .zoom-img img { transition:transform .6s cubic-bezier(.16,.84,.44,1); }
+  .card-hover:hover .zoom-img img { transform:scale(1.07); }
+
+  .badge-card { transition:transform .35s cubic-bezier(.16,.84,.44,1), box-shadow .35s ease, border-color .35s ease; }
+  .badge-card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(10,37,64,.1); border-color:#c9dcee; }
+  .badge-card:hover .badge-icon-wrap { background:var(--brand-blue); }
+  .badge-card:hover .badge-icon-wrap svg { stroke:#fff; }
+  .badge-icon-wrap { transition:background .35s ease; }
+  .badge-icon-wrap svg { transition:stroke .35s ease; }
+
+  .loc-card { transition:transform .35s cubic-bezier(.16,.84,.44,1), box-shadow .35s ease; }
+  .loc-card:hover { transform:translateY(-5px); box-shadow:0 20px 40px rgba(10,37,64,.12); }
+
+  .tab-btn { border:none; border-radius:999px; padding:11px 22px; font-size:14.5px; font-weight:700; cursor:pointer; transition:all .25s ease; background:#f0f3f6; color:#495a68; }
+  .tab-btn:hover:not(.active) { background:#e4ecf3; color:#0a2540; }
   .tab-btn.active { background:var(--brand-navy); color:#fff; }
-  .nav-links a { padding:10px 16px; font-size:15px; font-weight:600; color:#33414d; border-radius:8px; }
-  .row-item { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid #eef1f4; }
-  .row-item.hidden { display:none; }
+
+  .nav-links a { position:relative; padding:10px 16px; font-size:15px; font-weight:600; color:#33414d; border-radius:8px; transition:color .25s ease; }
+  .nav-links a::after { content:''; position:absolute; left:16px; right:16px; bottom:5px; height:2px; background:var(--brand-blue); border-radius:2px; transform:scaleX(0); transform-origin:left; transition:transform .3s cubic-bezier(.16,.84,.44,1); }
+  .nav-links a:hover { color:#0068b7; }
+  .nav-links a:hover::after { transform:scaleX(1); }
+
+  .btn-lift { transition:transform .3s cubic-bezier(.16,.84,.44,1), box-shadow .3s ease, background .3s ease; }
+  .btn-lift:hover { transform:translateY(-3px); box-shadow:0 14px 28px rgba(0,0,0,.18); }
+
+  .fab { transition:transform .3s cubic-bezier(.16,.84,.44,1), box-shadow .3s ease; }
+  .fab:hover { transform:scale(1.08); box-shadow:0 16px 32px rgba(10,37,64,.5); }
+
+  .timeline-row-item:hover .timeline-dot { transform:scale(1.4); box-shadow:0 0 0 5px rgba(27,110,60,.15); }
+  .timeline-dot { transition:transform .3s cubic-bezier(.16,.84,.44,1), box-shadow .3s ease; }
+  .timeline-row-item:hover .timeline-text { color:#0a2540; }
+  .timeline-text { transition:color .25s ease; }
+
+  /* Scroll reveal */
+  .reveal { opacity:0; transform:translateY(30px); transition:opacity .8s cubic-bezier(.16,.84,.44,1), transform .8s cubic-bezier(.16,.84,.44,1); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  .row-item { display:grid; grid-template-columns:52px 92px 1fr; column-gap:14px; align-items:center; padding:11px 0; border-bottom:1px solid #eef1f4; transition:background .2s ease; }
+  .row-item:hover { background:#f9fbfc; }
+  .row-item .row-year { font-size:11.5px; font-weight:700; color:#0068b7; background:#eaf3fb; padding:3px 0; border-radius:6px; text-align:center; }
+  .row-item .row-cat { font-size:13px; color:#33414d; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .row-item .row-name { font-size:13.5px; color:#33414d; font-weight:500; }
   @media (max-width:880px){
     .nav-links{display:none;}
     .hero-title{font-size:34px !important; line-height:1.28 !important;}
@@ -78,14 +118,14 @@
     <h1 class="hero-title" style="font-size:52px; line-height:1.32; font-weight:800; color:#fff; max-width:720px; letter-spacing:-0.01em;">1982년부터 이어온<br>공조설비 시공의 기본</h1>
     <p style="font-size:17px; line-height:1.75; color:#cfe0f2; max-width:600px;">㈜하늘금은 충실한 기본을 바탕으로 성실과 책임 시공을 통해 고객 만족을 실현합니다. 시스템에어컨부터 중앙공조·에너지 솔루션까지, 설계부터 시공·유지관리까지 책임지는 공조설비 전문기업입니다.</p>
     <div style="display:flex; gap:14px; flex-wrap:wrap;">
-      <a href="#projects" style="background:#fff; color:#0a2540; padding:15px 28px; border-radius:10px; font-size:15.5px; font-weight:700;">시공실적 보기</a>
-      <a href="tel:0292699991" style="background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.35); color:#fff; padding:15px 28px; border-radius:10px; font-size:15.5px; font-weight:700;">전화 상담 02-926-9991</a>
+      <a href="#projects" class="btn-lift" style="background:#fff; color:#0a2540; padding:15px 28px; border-radius:10px; font-size:15.5px; font-weight:700;">시공실적 보기</a>
+      <a href="tel:0292699991" class="btn-lift" style="background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.35); color:#fff; padding:15px 28px; border-radius:10px; font-size:15.5px; font-weight:700;">전화 상담 02-926-9991</a>
     </div>
     <div class="hero-stats" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:760px; margin-top:24px;">
-      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div style="font-size:28px; font-weight:800; color:#fff;">1982</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">설립연도</div></div>
-      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div style="font-size:28px; font-weight:800; color:#fff;">87+</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">누적 시공현장</div></div>
-      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div style="font-size:28px; font-weight:800; color:#fff;">20년+</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">삼성전자 공식 파트너</div></div>
-      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div style="font-size:28px; font-weight:800; color:#fff;">34.4억</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">2024 시공능력평가액</div></div>
+      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div class="stat-num" data-target="1982" data-decimals="0" data-suffix="" style="font-size:28px; font-weight:800; color:#fff;">0</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">설립연도</div></div>
+      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div class="stat-num" data-target="87" data-decimals="0" data-suffix="+" style="font-size:28px; font-weight:800; color:#fff;">0+</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">누적 시공현장</div></div>
+      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div class="stat-num" data-target="20" data-decimals="0" data-suffix="년+" style="font-size:28px; font-weight:800; color:#fff;">0년+</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">삼성전자 공식 파트너</div></div>
+      <div style="border-top:2px solid rgba(255,255,255,.35); padding-top:14px;"><div class="stat-num" data-target="34.4" data-decimals="1" data-suffix="억" style="font-size:28px; font-weight:800; color:#fff;">0억</div><div style="font-size:13px; color:#a9c3dc; margin-top:4px;">2024 시공능력평가액</div></div>
     </div>
   </div>
 </div>
@@ -100,7 +140,7 @@
         <div style="width:44px; height:4px; background:#0068b7; border-radius:2px;"></div>
         <p style="font-size:14.5px; line-height:1.9; color:#5b6b7a; font-weight:700; margin-top:6px;">혁신과 가치창조를 통해<br>더 나은 미래 건설</p>
       </div>
-      <div style="display:flex; flex-direction:column; gap:36px;">
+      <div class="reveal" style="display:flex; flex-direction:column; gap:36px;">
         <p style="font-size:16px; line-height:1.95; color:#33414d;">㈜하늘금은 1982년 설립 이후 지속적인 혁신과 가치를 창출하며 고객과 함께 성장해온 공조설비 전문 기업입니다. 삼성전자(주) 공식 시스템전문점으로서 EHP·GHP 시스템 냉난방기, 전열교환기, 종합공조, 중앙공조 등 다양한 에너지 솔루션을 제공합니다.<br><br>주거시설, 근린생활시설, 복지시설, 종교시설, 공장 등 다양한 현장에서 고객의 요구에 맞춘 최적의 설계 및 시공을 수행하며, 현장 점검을 통한 정확한 설계와 감리 기준을 적용해 쾌적하고 효율적인 공조 설비를 구축하고 있습니다.</p>
         <div class="three-col" style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
           <div style="background:#f6f9fb; border:1px solid #e7ecf1; border-top:3px solid var(--brand-navy); border-radius:14px; padding:24px 20px;">
@@ -119,11 +159,39 @@
             <div style="font-size:13.5px; color:#697786; line-height:1.6;">끊임없는 혁신으로 더 나은 미래를 건설</div>
           </div>
         </div>
-        <div style="background:#0a2540; border-radius:16px; padding:28px 30px; display:grid; grid-template-columns:1fr 1fr; gap:18px 28px;">
-          <div><div style="font-size:12px; color:#8fa9c4; margin-bottom:4px;">회사명</div><div style="font-size:14.5px; color:#fff; font-weight:600;">주식회사 하늘금</div></div>
-          <div><div style="font-size:12px; color:#8fa9c4; margin-bottom:4px;">업태 / 종목</div><div style="font-size:14.5px; color:#fff; font-weight:600;">건설업 / 배관 및 냉난방공사업</div></div>
-          <div><div style="font-size:12px; color:#8fa9c4; margin-bottom:4px;">업종면허</div><div style="font-size:14.5px; color:#fff; font-weight:600;">기계가스설비공사업 (성북-07-12-01)</div></div>
-          <div><div style="font-size:12px; color:#8fa9c4; margin-bottom:4px;">본사 소재지</div><div style="font-size:14.5px; color:#fff; font-weight:600;">서울시 성북구 동소문로 84-1, 2층</div></div>
+        <div style="position:relative; background:linear-gradient(150deg,#0d2c50 0%,#0a2540 45%,#051225 100%); border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.09); box-shadow:0 28px 56px rgba(4,12,24,.4), inset 0 1px 0 rgba(255,255,255,.06);">
+          <div style="height:3px; background:linear-gradient(90deg,var(--brand-navy),var(--brand-blue) 35%,var(--brand-green) 68%,var(--brand-orange));"></div>
+          <div style="position:absolute; top:14px; right:18px; font-size:10.5px; font-weight:700; letter-spacing:.16em; color:rgba(191,224,255,.4);">SINCE 1982</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; padding:40px 38px 36px;">
+            <div style="padding:0 26px 24px 0; border-right:1px solid rgba(255,255,255,.09); border-bottom:1px solid rgba(255,255,255,.09);">
+              <div style="display:flex; align-items:center; gap:7px; margin-bottom:10px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5b86ac" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V7l6-4 6 4v14M9 9h1m4 0h1m-6 4h1m4 0h1m-6 4h1m4 0h1"/></svg>
+                <div style="font-size:11px; font-weight:700; letter-spacing:.14em; color:#5b86ac; text-transform:uppercase;">회사명</div>
+              </div>
+              <div style="font-size:18px; color:#fff; font-weight:800; letter-spacing:-.01em;">주식회사 하늘금</div>
+            </div>
+            <div style="padding:0 0 24px 26px; border-bottom:1px solid rgba(255,255,255,.09);">
+              <div style="display:flex; align-items:center; gap:7px; margin-bottom:10px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5b86ac" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <div style="font-size:11px; font-weight:700; letter-spacing:.14em; color:#5b86ac; text-transform:uppercase;">업태 / 종목</div>
+              </div>
+              <div style="font-size:15.5px; color:#fff; font-weight:700; line-height:1.5;">건설업 / 배관 및 냉난방공사업</div>
+            </div>
+            <div style="padding:24px 26px 0 0; border-right:1px solid rgba(255,255,255,.09);">
+              <div style="display:flex; align-items:center; gap:7px; margin-bottom:10px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5b86ac" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"/><path d="M9 12l2 2 4-4"/></svg>
+                <div style="font-size:11px; font-weight:700; letter-spacing:.14em; color:#5b86ac; text-transform:uppercase;">업종면허</div>
+              </div>
+              <div style="font-size:15.5px; color:#fff; font-weight:700; line-height:1.5;">기계가스설비공사업<br><span style="color:#93b3d1; font-weight:500; font-size:13px;">등록번호 성북-07-12-01</span></div>
+            </div>
+            <div style="padding:24px 0 0 26px;">
+              <div style="display:flex; align-items:center; gap:7px; margin-bottom:10px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5b86ac" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div style="font-size:11px; font-weight:700; letter-spacing:.14em; color:#5b86ac; text-transform:uppercase;">본사 소재지</div>
+              </div>
+              <div style="font-size:15.5px; color:#fff; font-weight:700; line-height:1.5;">서울시 성북구 동소문로 84-1, 2층</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -139,7 +207,7 @@
       <p style="font-size:15px; color:#697786;">시스템에어컨부터 공조·에너지 솔루션, 종합관리까지 원스톱으로 제공합니다.</p>
     </div>
     <div class="three-col" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
-      <div class="card-hover" style="background:#fff; border-radius:18px; padding:34px 28px; border:1px solid #e7ecf1;">
+      <div class="card-hover reveal" style="background:#fff; border-radius:18px; padding:34px 28px; border:1px solid #e7ecf1;">
         <div style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,#0068b7,#00a3e0); display:flex; align-items:center; justify-content:center; margin-bottom:22px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M12 2v20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg></div>
         <h3 style="font-size:19px; font-weight:700; color:#0a2540; margin-bottom:12px;">시스템 에어컨</h3>
         <p style="font-size:14px; color:#697786; line-height:1.75; margin-bottom:20px;">우수한 디자인과 뛰어난 에너지 효율의 삼성전자 시스템에어컨을 공간 특성에 맞춰 설계·시공합니다.</p>
@@ -149,7 +217,7 @@
           <div style="display:flex; gap:8px; align-items:flex-start;"><div style="width:5px; height:5px; border-radius:50%; background:#0068b7; margin-top:7px; flex-shrink:0;"></div><div style="font-size:13.5px; color:#495a68;"><b>중대형 건물</b> — 공공기관·문화·체육시설 고성능 솔루션</div></div>
         </div>
       </div>
-      <div class="card-hover" style="background:#fff; border-radius:18px; padding:34px 28px; border:1px solid #e7ecf1;">
+      <div class="card-hover reveal" style="background:#fff; border-radius:18px; padding:34px 28px; border:1px solid #e7ecf1;">
         <div style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,#0068b7,#00a3e0); display:flex; align-items:center; justify-content:center; margin-bottom:22px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
         <h3 style="font-size:19px; font-weight:700; color:#0a2540; margin-bottom:12px;">공조 &amp; 에너지 솔루션</h3>
         <p style="font-size:14px; color:#697786; line-height:1.75; margin-bottom:20px;">대형 건물부터 중소형·주거용 건물까지 맞춤형 공조·에너지 솔루션을 제공합니다.</p>
@@ -159,7 +227,7 @@
           <div style="display:flex; gap:8px; align-items:flex-start;"><div style="width:5px; height:5px; border-radius:50%; background:#0068b7; margin-top:7px; flex-shrink:0;"></div><div style="font-size:13.5px; color:#495a68;"><b>급탕·난방 / 콜드체인 / 산업용 히트펌프</b></div></div>
         </div>
       </div>
-      <div class="card-hover" style="background:#fff; border-radius:18px; padding:34px 28px; border:1px solid #e7ecf1;">
+      <div class="card-hover reveal" style="background:#fff; border-radius:18px; padding:34px 28px; border:1px solid #e7ecf1;">
         <div style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,#0068b7,#00a3e0); display:flex; align-items:center; justify-content:center; margin-bottom:22px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
         <h3 style="font-size:19px; font-weight:700; color:#0a2540; margin-bottom:12px;">종합관리 솔루션</h3>
         <p style="font-size:14px; color:#697786; line-height:1.75; margin-bottom:20px;">체계적인 정기점검과 세척으로 시스템에어컨을 최적 상태로 유지합니다.</p>
@@ -182,12 +250,12 @@
       <p style="font-size:15px; color:#697786;">건설업 등록과 삼성전자 공식 인증으로 시공 역량을 증명합니다.</p>
     </div>
     <div class="badge-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:96px;">
-      <div style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">건설업 등록</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">기계가스설비공사업 · 등록번호 성북-07-12-01</div></div></div>
-      <div style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">삼성전자(주) 냉난방 전문점</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2004년 취득 · 시스템에어컨 DVM 기술점 인증</div></div></div>
-      <div style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L22 9l-5 5.1L18.2 22 12 18.6 5.8 22 7 14.1 2 9l7.1-.7z"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">시스템에어컨 최우수 기술점</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2005년 삼성전자(주) 선정</div></div></div>
-      <div style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">B2B영업팀 STAR파트너</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2016년 ~ 2024년 삼성전자(주) 인증</div></div></div>
-      <div style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l9 4 9-4-9-4-9 4z"/><path d="M3 6v9c0 1.1 4 4 9 4s9-2.9 9-4V6"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">유지보수·세척 인증점</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2022년 ~ 2025년 삼성전자(주) 냉난방기 인증</div></div></div>
-      <div style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">2024년도 시공능력평가액</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">3,443,042천원 (약 34.4억원)</div></div></div>
+      <div class="badge-card reveal" style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div class="badge-icon-wrap" style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">건설업 등록</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">기계가스설비공사업 · 등록번호 성북-07-12-01</div></div></div>
+      <div class="badge-card reveal" style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div class="badge-icon-wrap" style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">삼성전자(주) 냉난방 전문점</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2004년 취득 · 시스템에어컨 DVM 기술점 인증</div></div></div>
+      <div class="badge-card reveal" style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div class="badge-icon-wrap" style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L22 9l-5 5.1L18.2 22 12 18.6 5.8 22 7 14.1 2 9l7.1-.7z"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">시스템에어컨 최우수 기술점</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2005년 삼성전자(주) 선정</div></div></div>
+      <div class="badge-card reveal" style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div class="badge-icon-wrap" style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">B2B영업팀 STAR파트너</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2016년 ~ 2024년 삼성전자(주) 인증</div></div></div>
+      <div class="badge-card reveal" style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div class="badge-icon-wrap" style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l9 4 9-4-9-4-9 4z"/><path d="M3 6v9c0 1.1 4 4 9 4s9-2.9 9-4V6"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">유지보수·세척 인증점</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">2022년 ~ 2025년 삼성전자(주) 냉난방기 인증</div></div></div>
+      <div class="badge-card reveal" style="border:1px solid #e7ecf1; border-radius:14px; padding:22px; display:flex; gap:14px; align-items:flex-start;"><div class="badge-icon-wrap" style="width:40px; height:40px; border-radius:10px; background:#eaf3fb; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0068b7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><div><div style="font-size:14.5px; font-weight:700; color:#0a2540; margin-bottom:4px;">2024년도 시공능력평가액</div><div style="font-size:12.5px; color:#697786; line-height:1.6;">3,443,042천원 (약 34.4억원)</div></div></div>
     </div>
 
     <div style="display:flex; flex-direction:column; gap:14px; align-items:flex-start; margin-bottom:44px;">
@@ -225,7 +293,7 @@
       <h2 style="font-size:30px; font-weight:800; color:#0a2540;">오시는 길</h2>
     </div>
     <div class="loc-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-      <div style="border:1px solid #e7ecf1; border-radius:18px; overflow:hidden;">
+      <div class="loc-card reveal" style="border:1px solid #e7ecf1; border-radius:18px; overflow:hidden;">
         <div style="height:8px; background:linear-gradient(90deg,var(--brand-navy),var(--brand-green));"></div>
         <div style="padding:32px;">
           <div style="font-size:13px; font-weight:700; color:#0068b7; margin-bottom:10px;">본사</div>
@@ -238,7 +306,7 @@
           <a href="https://map.naver.com/p/search/서울시%20성북구%20동소문로%2084-1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; background:#0a2540; color:#fff; padding:12px 20px; border-radius:9px; font-size:14px; font-weight:700;">지도에서 보기 →</a>
         </div>
       </div>
-      <div style="border:1px solid #e7ecf1; border-radius:18px; overflow:hidden;">
+      <div class="loc-card reveal" style="border:1px solid #e7ecf1; border-radius:18px; overflow:hidden;">
         <div style="height:8px; background:linear-gradient(90deg,var(--brand-blue),var(--brand-orange));"></div>
         <div style="padding:32px;">
           <div style="font-size:13px; font-weight:700; color:#0068b7; margin-bottom:10px;">지사</div>
@@ -258,7 +326,7 @@
   <div class="container" style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:22px;">
     <h2 style="font-size:27px; font-weight:800; color:#fff;">공조설비 시공 상담이 필요하신가요?</h2>
     <p style="font-size:15px; color:#cfe0f2;">설계부터 시공, 유지관리까지 — ㈜하늘금이 함께합니다.</p>
-    <a href="tel:0292699991" style="background:#fff; color:#0a2540; padding:15px 32px; border-radius:10px; font-size:15.5px; font-weight:700;">02-926-9991 전화 상담</a>
+    <a href="tel:0292699991" class="btn-lift" style="background:#fff; color:#0a2540; padding:15px 32px; border-radius:10px; font-size:15.5px; font-weight:700;">02-926-9991 전화 상담</a>
   </div>
 </div>
 
@@ -278,7 +346,7 @@
 </div>
 
 <!-- Floating call button -->
-<a href="tel:0292699991" aria-label="전화 상담" style="position:fixed; right:20px; bottom:20px; width:56px; height:56px; border-radius:50%; background:#0a2540; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px rgba(10,37,64,.4); z-index:45;">
+<a href="tel:0292699991" aria-label="전화 상담" class="fab" style="position:fixed; right:20px; bottom:20px; width:56px; height:56px; border-radius:50%; background:#0a2540; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px rgba(10,37,64,.4); z-index:45;">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
   <div style="position:absolute; top:-2px; right:-2px; width:14px; height:14px; border-radius:50%; background:var(--brand-orange); border:2px solid #fff;"></div>
 </a>
@@ -429,20 +497,20 @@ function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").rep
 // History
 document.getElementById("history-list").innerHTML = HISTORY.map(function(h, i){
   var isLast = i === HISTORY.length - 1;
-  return '<div style="display:grid; grid-template-columns:140px 24px 1fr; column-gap:20px;">' +
+  return '<div class="timeline-row-item reveal" style="display:grid; grid-template-columns:140px 24px 1fr; column-gap:20px;">' +
     '<div class="timeline-year" style="font-size:15px; font-weight:800; color:#0068b7; padding-top:2px; text-align:right;">' + esc(h.year) + '</div>' +
     '<div style="display:flex; flex-direction:column; align-items:center;">' +
-      '<div style="width:11px; height:11px; border-radius:50%; background:var(--brand-green); border:2px solid #fff; box-shadow:0 0 0 1px #cfe3d6; margin-top:4px; flex-shrink:0;"></div>' +
+      '<div class="timeline-dot" style="width:11px; height:11px; border-radius:50%; background:var(--brand-green); border:2px solid #fff; box-shadow:0 0 0 1px #cfe3d6; margin-top:4px; flex-shrink:0;"></div>' +
       (isLast ? '' : '<div style="width:2px; flex:1; background:#e2e8ee;"></div>') +
     '</div>' +
-    '<div style="padding-bottom:30px;"><div style="font-size:15px; color:#33414d; font-weight:500; padding-top:1px;">' + esc(h.text) + '</div></div>' +
+    '<div style="padding-bottom:30px;"><div class="timeline-text" style="font-size:15px; color:#33414d; font-weight:500; padding-top:1px;">' + esc(h.text) + '</div></div>' +
   '</div>';
 }).join("");
 
 // Featured
 document.getElementById("featured-grid").innerHTML = FEATURED.map(function(p){
-  return '<div class="card-hover" style="background:#fff; border-radius:16px; overflow:hidden; border:1px solid #e7ecf1; cursor:pointer;" data-open="' + p.id + '">' +
-    '<div style="position:relative; height:190px; overflow:hidden;">' +
+  return '<div class="card-hover reveal" style="background:#fff; border-radius:16px; overflow:hidden; border:1px solid #e7ecf1; cursor:pointer;" data-open="' + p.id + '">' +
+    '<div class="zoom-img" style="position:relative; height:190px; overflow:hidden;">' +
       '<img src="' + p.img + '" alt="' + esc(p.title) + '" style="width:100%; height:100%; object-fit:cover;">' +
       '<div style="position:absolute; top:12px; left:12px; background:rgba(10,37,64,.82); color:#fff; font-size:11.5px; font-weight:700; padding:5px 12px; border-radius:999px;">' + esc(p.useTag) + '</div>' +
     '</div>' +
@@ -468,9 +536,9 @@ function renderRows(){
   var rows = activeTab === "all" ? ROWS : ROWS.filter(function(r){ return r.cat === activeTab; });
   document.getElementById("rows-list").innerHTML = rows.map(function(r){
     return '<div class="row-item">' +
-      '<div style="font-size:11.5px; font-weight:700; color:#0068b7; background:#eaf3fb; padding:3px 9px; border-radius:6px; flex-shrink:0; width:48px; text-align:center;">' + esc(r.year) + '</div>' +
-      '<div style="font-size:13.5px; color:#33414d; flex-shrink:0; width:56px;">' + esc(CAT_LABEL[r.cat]) + '</div>' +
-      '<div style="font-size:13.5px; color:#33414d; font-weight:500;">' + esc(r.name) + '</div>' +
+      '<div class="row-year">' + esc(r.year) + '</div>' +
+      '<div class="row-cat">' + esc(CAT_LABEL[r.cat]) + '</div>' +
+      '<div class="row-name">' + esc(r.name) + '</div>' +
     '</div>';
   }).join("");
 }
@@ -508,6 +576,61 @@ document.getElementById("featured-grid").addEventListener("click", function(e){
 overlay.addEventListener("click", function(e){ if (e.target === overlay) closeModal(); });
 document.getElementById("modal-close").addEventListener("click", closeModal);
 document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeModal(); });
+
+// Scroll reveal (Samsung-style fade/slide-in on scroll)
+function initReveal(){
+  var els = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)){
+    els.forEach(function(el){ el.classList.add("visible"); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry, i){
+      if (entry.isIntersecting){
+        var el = entry.target;
+        setTimeout(function(){ el.classList.add("visible"); }, (i % 3) * 90);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+  els.forEach(function(el){ io.observe(el); });
+}
+initReveal();
+// Re-scan after JS-rendered sections (history/featured) are injected
+setTimeout(initReveal, 60);
+
+// Hero stat count-up
+function initCountUp(){
+  var nums = document.querySelectorAll(".stat-num[data-target]");
+  if (!nums.length) return;
+  function animate(el){
+    var target = parseFloat(el.getAttribute("data-target"));
+    var decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+    var suffix = el.getAttribute("data-suffix") || "";
+    var dur = 1400, start = null;
+    function step(ts){
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = target * eased;
+      el.textContent = val.toFixed(decimals) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target.toFixed(decimals) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  if ("IntersectionObserver" in window){
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){ animate(entry.target); io2.unobserve(entry.target); }
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function(el){ io2.observe(el); });
+  } else {
+    nums.forEach(animate);
+  }
+}
+initCountUp();
 </script>
 </body>
 </html>
